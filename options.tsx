@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import './style.css';
+
 
 type Prompt = {
   title: string;
@@ -72,11 +74,11 @@ const Options = () => {
 
   return (
     <div className="p-4 w-full max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Extension Options</h1>
+      <h1 className="text-2xl font-bold mb-4"> Options </h1>
 
       {/* AI Mode Selection */}
       <div className="mb-6">
-        <label className="block text-gray-700 mb-2">AI Mode</label>
+        <label className="block text-gray-700 mb-2">Choose AI</label>
         <div className="flex gap-2">
           <button
             onClick={() => setSettings({ ...settings, aiMode: "offline" })}
@@ -115,7 +117,7 @@ const Options = () => {
                   value="pe"
                   onChange={() => setSettings({ ...settings, token: "" })}
                 />
-                Pe
+                OpenAI
               </label>
             </div>
             <input
