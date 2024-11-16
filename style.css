@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.plasmo-corner-button {
+  position: fixed !important;
+  width: 24px !important;
+  height: 24px !important;
+  background: #4CAF50 !important;
+  border: none !important;
+  border-radius: 50% !important;
+  color: white !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 16px !important;
+  z-index: 2147483647 !important;
+  transition: all 0.2s !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-width: unset !important;
+  min-height: unset !important;
+  line-height: 24px !important;
+}
+
+.plasmo-corner-button:hover {
+  background: #45a049 !important;
+  transform: scale(1.1) !important;
+}
+
+.plasmo-context-menu {
+  position: fixed !important;
+  background: white !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+  min-width: 150px !important;
+  z-index: 2147483647 !important;
+  overflow: hidden !important;
+  border: 1px solid #eee !important;
+  padding: 4px 0 !important;
+}
+
+.plasmo-menu-item {
+  padding: 8px 12px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  transition: background-color 0.2s !important;
+  color: #333 !important;
+  font-size: 14px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+  background: none !important;
+}
+
+.plasmo-menu-item:hover,
+.plasmo-menu-item.selected {
+  background: #e8f5e9 !important;
+  color: #2e7d32 !important;
+}
+
+.plasmo-menu-item .material-icons {
+  font-size: 18px !important;
+}
+
+.plasmo-loader {
+  position: absolute !important;
+  right: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 16px !important;
+  height: 16px !important;
+  border: 2px solid #f3f3f3 !important;
+  border-top: 2px solid #4CAF50 !important;
+  border-radius: 50% !important;
+  animation: plasmo-spin 1s linear infinite !important;
+  z-index: 2147483647 !important;
+}
+
+@keyframes plasmo-spin {
+  0% { transform: translateY(-50%) rotate(0deg); }
+  100% { transform: translateY(-50%) rotate(360deg); }
+}
