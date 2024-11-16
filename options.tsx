@@ -27,16 +27,20 @@ const Options = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // Load prompts from localStorage on mount
   useEffect(() => {
-    const storedPrompts = JSON.parse(localStorage.getItem("prompts") || "[]");
-    setPrompts(storedPrompts);
-  }, []);
+    chrome.storage.local.get(["prompts"], (result) => {
+        const savedPrompts = result.prompts || [];
+        console.log("Loaded prompts:", savedPrompts);
+        setPrompts(savedPrompts);
+    });
+    }, []);
 
-  // Save prompts to localStorage when they change
-  useEffect(() => {
-    localStorage.setItem("prompts", JSON.stringify(prompts));
-  }, [prompts]);
+    useEffect(() => {
+    chrome.storage.local.set({ prompts }, () => {
+        console.log("Prompts updated in storage:", prompts);
+    });
+    }, [prompts]);
+
 
   // Handle form changes
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

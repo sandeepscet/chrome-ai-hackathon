@@ -1,3 +1,7 @@
+## Issues
+- tailwind css not applied
+-
+
 ## Features
 - Store Prompts by website or *
 - menu Icons in textbox

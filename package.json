@@ -28,6 +28,11 @@
     "typescript": "5.3.3"
   },
   "manifest": {
+    "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
     "options_ui": {
       "page": "options.html",
       "open_in_tab": true

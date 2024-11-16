@@ -1,13 +1,12 @@
 import type { PlasmoCSConfig } from "plasmo"
 import cssText from "data-text:./style.css"
-import { generateText } from "~ai-helper"
-import { useStorage } from "@plasmohq/storage"
+import { fetchPromptsForCurrentWebsite, generateText } from "~ai-helper"
 
-chrome.storage.local.get([window.location.hostname], (result) => {
-  const prompts = result[window.location.hostname] || []
+let prompts = [];
 
-  console.log(prompts)  // You can use this data to inject something into the webpage
-})
+fetchPromptsForCurrentWebsite((filteredPrompts) => {
+ prompts = filteredPrompts
+});
 
 
 export const config: PlasmoCSConfig = {
@@ -22,15 +21,10 @@ document.head.appendChild(style)
 
 // Types
 interface ContextMenuItem {
-  label: string
-  action: string
-  icon?: string
+  title: string
+  icon: string
+  promptId?: string
 }
-
-const DEFAULT_MENU_ITEMS: ContextMenuItem[] = [
-  { label: "Rewrite", action: "rewrite", icon: "" },
-  { label: "Summarize", action: "summarize", icon: "" }
-]
 
 // Create context menu
 const createContextMenu = (items: ContextMenuItem[], targetId: string): HTMLElement => {
@@ -45,16 +39,16 @@ const createContextMenu = (items: ContextMenuItem[], targetId: string): HTMLElem
     const option = document.createElement("div")
     option.className = "plasmo-menu-item"
     option.setAttribute("role", "option")
-    option.setAttribute("data-action", item.action)
+    option.setAttribute("data-promptId", item.promptId)
     option.innerHTML = `
       ${item.icon ? `<span class="material-icons">${item.icon}</span>` : ''}
-      <span>${item.label}</span>
+      <span>${item.title}</span>
     `
 
     // Add click handler for each menu item
     option.addEventListener('click', (e) => {
       e.stopPropagation()
-      handleMenuAction(item.action, menu)
+      handleMenuAction(parseInt(item.promptId), menu)
     })
 
     // Add mouse enter handler for highlighting
@@ -72,7 +66,7 @@ const createContextMenu = (items: ContextMenuItem[], targetId: string): HTMLElem
 }
 
 // Handle text formatting
-const applyFormatting = async (element: Element, action: string) => {
+const applyFormatting = async (element: Element, promptId: number) => {
   if (element instanceof HTMLTextAreaElement || element instanceof HTMLInputElement) {
     const start = element.selectionStart
     const end = element.selectionEnd
@@ -87,22 +81,21 @@ const applyFormatting = async (element: Element, action: string) => {
     let formattedText = ''
 
     element.value = 'Generating!!'
-    const stream = await generateText(1, selectedText);
+    const stream = await generateText(promptId, selectedText, prompts);
 
     for await (const chunk of stream) {
       formattedText = chunk;
-      element.value = text.substring(0, start) + formattedText + text.substring(end);
+      element.value = formattedText;
     }
 
     element.focus()
-    element.setSelectionRange(start, start + formattedText.length)
   }
 }
 
 let activeMenu: HTMLElement | null = null
 let selectedIndex = -1
 
-const handleMenuAction = async (action: string, menu: HTMLElement) => {
+const handleMenuAction = async (action: number, menu: HTMLElement) => {
   const targetId = menu.getAttribute('data-target-id')
   const element = document.getElementById(targetId!)
   if (!element) return
@@ -142,7 +135,7 @@ const handleKeyNavigation = (e: KeyboardEvent, menu: HTMLElement) => {
       e.preventDefault()
       if (selectedIndex >= 0) {
         const selectedItem = items[selectedIndex] as HTMLElement
-        const action = selectedItem.getAttribute('data-action')
+        const action = parseInt(selectedItem.getAttribute('data-action'), 10)
         if (action) handleMenuAction(action, menu)
       }
       break
@@ -210,7 +203,11 @@ const initializeEnhancement = () => {
       e.stopPropagation()
       closeContextMenu()
 
-      const menu = createContextMenu(DEFAULT_MENU_ITEMS, uniqueId)
+      const menuitems = prompts.map((item, index) => {
+        return { ...item, promptId: index.toString() };
+      });
+
+      const menu = createContextMenu(menuitems, uniqueId)
       const rect = cornerButton.getBoundingClientRect()
       menu.style.left = `${rect.right}px`
       menu.style.top = `${rect.top}px`
