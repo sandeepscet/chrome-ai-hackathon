@@ -8,6 +8,7 @@ library.add(faPen,faTrashCan);
 import './style.css';
 
 type Prompt = {
+  id: string,
   title: string;
   role: string;
   description: string;
@@ -24,6 +25,7 @@ const Options = () => {
   const [prompts, setPrompts] = useState<Prompt[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [newPrompt, setNewPrompt] = useState<Prompt>({
+    id: "",
     title: "",
     role: "",
     description: "",
@@ -96,16 +98,23 @@ const handleTokenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   });
 };
 
-const handleEdit = (index: number) => {
-    const promptToEdit = prompts[index];
+const handleEdit = (id) => {
+    const promptIndex = prompts.findIndex((prompt) => prompt.id === id);
+    const promptToEdit = prompts[promptIndex];
     setNewPrompt(promptToEdit);
     setShowForm(true);  // Open the form to edit
   };
 
-  // Delete prompt logic
-  const handleDelete = (index: number) => {
-    if (confirm("Are you sure you want to delete this prompt?"))
-      setPrompts(prompts.filter((_, i) => i !== index));
+ const handleDelete = (id) => {
+    if (confirm("Are you sure you want to delete this prompt?")) {
+      const promptIndex = prompts.findIndex((prompt) => prompt.id === id);
+      if (promptIndex !== -1) {
+        setPrompts((prevPrompts) => {
+          const updatedPrompts = [...prevPrompts];
+          updatedPrompts.splice(promptIndex, 1);
+          return updatedPrompts;
+        });
+      }
     }
   };
 
@@ -122,14 +131,26 @@ const handleEdit = (index: number) => {
       return false;
     }
 
-    setPrompts([...prompts, newPrompt]);
-    setNewPrompt({ title: "", role: "", description: "", icon: "", website: "" });
+    if (!newPrompt['id']) {
+      newPrompt['id'] = self.crypto.randomUUID();
+      setPrompts([...prompts, newPrompt]);
+    } else {
+    const promptIndex = prompts.findIndex((prompt) => prompt.id === newPrompt.id);
+      if (promptIndex !== -1) {
+        setPrompts((prevPrompts) => {
+          const updatedPrompts = [...prevPrompts];
+          updatedPrompts[promptIndex] = newPrompt;
+          return updatedPrompts;
+        });
+  }    }
+
+    setNewPrompt({ id:'', title: "", role: "", description: "", icon: "", website: "" });
     setErrorMessage('');
     setShowForm(false);
   };
 
   const handleCancel = () => {
-    setNewPrompt({ title: "", role: "", description: "", icon: "", website: "" });
+    setNewPrompt({ id:"", title: "", role: "", description: "", icon: "", website: "" });
     setShowForm(false);
   };
 
@@ -336,11 +357,11 @@ const handleEdit = (index: number) => {
                   <td className="border p-2">
                     <FontAwesomeIcon icon="pen"
                       className="h-5 w-5 text-blue-500 cursor-pointer mr-2"
-                      onClick={() => handleEdit(index)}
+                      onClick={() => handleEdit(prompt.id)}
                     />
                     <FontAwesomeIcon icon="trash-can"
                       className="h-5 w-5 text-red-500 cursor-pointer"
-                      onClick={() => handleDelete(index)}
+                      onClick={() => handleDelete(prompt.id)}
                     />
                   </td>
                 </tr>

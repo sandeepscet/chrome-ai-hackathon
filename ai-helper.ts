@@ -6,7 +6,7 @@ export async  function fetchPromptsForCurrentWebsite (callback) {
 
     // Filter prompts by current hostname
     const filteredPrompts = storedPrompts.filter((prompt: { website: string }) =>
-      prompt.website.includes(currentHostname)
+      prompt.website.includes(currentHostname) || prompt.website === ''
     );
 
     console.log("Prompts for current website:", filteredPrompts);
