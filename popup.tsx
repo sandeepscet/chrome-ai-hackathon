@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import './popup.css';
 
 const Popup = () => {
+  const [currentTabId, setCurrentTabId] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length > 0) {
+        setCurrentTabId(tabs[0].id);
+      }
+    });
+  }, []);
+
   const handleNewPrompt = () => {
     console.log("New prompt created");
   };
 
   const handleChatWithPage = () => {
     console.log("Chat initiated with current page");
+    // Use the currentTabId here
+    if (currentTabId) {
+      // Perform actions with the current tab ID
+      console.log("Current tab ID:", currentTabId);
+      chrome.sidePanel.open({ tabId: currentTabId });
+    }
+
   };
 
   return (

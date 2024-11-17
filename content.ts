@@ -8,6 +8,20 @@ fetchPromptsForCurrentWebsite((filteredPrompts) => {
  prompts = filteredPrompts
 });
 
+// Extract body text
+const getBodyText = () => {
+    let bodyText = document.body.innerText || document.body.textContent;
+    return bodyText.trim();
+};
+
+// Send body text to the extension's background script
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === "getBodyText") {
+        sendResponse({ bodyText: getBodyText() });
+    }
+});
+
+
 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"],
@@ -168,8 +182,15 @@ const initializeEnhancement = () => {
   // Create and position corner button
   const createCornerButton = (element: Element): HTMLButtonElement => {
     const button = document.createElement("button")
+     const icon = document.createElement("img");
+    icon.src = chrome.runtime.getURL("icon.png");
+    icon.alt = "Extension Icon";
+    icon.className = "plasmo-corner-button-icon";
+
+    // Append the icon to the button
+    button.appendChild(icon);
     button.className = "plasmo-corner-button"
-    button.innerHTML = "+"
+    button.innerHTML = '*';
     button.setAttribute('data-plasmo-button', 'true')
     positionCornerButton(button, element)
     return button

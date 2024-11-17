@@ -34,11 +34,15 @@
     "permissions": [
       "storage",
       "activeTab",
-      "scripting"
+      "scripting",
+      "sidePanel"
     ],
     "options_ui": {
       "page": "options.html",
       "open_in_tab": true
+    },
+    "side_panel": {
+      "default_path": "sidepanel.html"
     },
     "host_permissions": [
       "https://*/*"
