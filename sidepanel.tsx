@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Chat from 'components/ChatHome';
 
 const Sidebar = () => {
     const [bodyText, setBodyText] = useState("Loading...");
@@ -17,10 +18,9 @@ const Sidebar = () => {
     }, []);
 
     return (
-        <div className="w-64 h-full bg-gray-100 p-4 shadow-lg">
-            <h1 className="text-lg font-bold">Sidebar Panel</h1>
-            <p className="text-sm whitespace-pre-wrap">{bodyText}</p>
-        </div>
+        <>
+        <Chat bodyText={bodyText}/>
+        </>
     );
 };
 

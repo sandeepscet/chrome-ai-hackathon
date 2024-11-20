@@ -1,13 +1,11 @@
 ## Next
 - Tooltip on text selection
-  - translate
-  - summarize
-  - easy explai
+  - API working
 - sidebar chat
 -
 
 ## Issues
--
+- Limit CSS scope to extention
 
 ## Features
 - Store Prompts by website or *
