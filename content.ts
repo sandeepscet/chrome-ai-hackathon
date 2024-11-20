@@ -299,3 +299,103 @@ const initializeEnhancement = () => {
 
 // Start the enhancement
 initializeEnhancement()
+
+
+// tooltip code
+  let selectedText = null;
+  let position = null;
+
+  // Create and inject the tooltip element
+  const createTooltip = () => {
+    const tooltip = document.createElement("div");
+    tooltip.id = "tooltip-container";
+    tooltip.className = "tooltip-class";
+    tooltip.style.position = "absolute";
+    tooltip.style.backgroundColor = "#333";
+    tooltip.style.color = "#fff";
+    tooltip.style.padding = "10px";
+    tooltip.style.borderRadius = "4px";
+    tooltip.style.maxWidth = "250px";
+    tooltip.style.fontSize = "12px";
+    tooltip.style.zIndex = "9999";
+    tooltip.style.display = "none"; // Hidden initially
+    document.body.appendChild(tooltip);
+    return tooltip;
+  };
+
+  // Simulate async API call (for demonstration purposes)
+  const simulateApiCall = (action, selectedText) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(`${action} result for: "${selectedText}"`);
+      }, 1000);
+    });
+  };
+
+  // Show the tooltip with the result
+  const showTooltip = (result) => {
+    const tooltip = document.getElementById("tooltip-container");
+
+    // Remove existing tooltip if any
+    tooltip.style.display = "none"; // Hide current tooltip
+    tooltip.textContent = result;
+    tooltip.style.display = "block"; // Show the new tooltip
+
+    if (position) {
+      tooltip.style.top = `${position.top + 40}px`;
+      tooltip.style.left = `${position.left}px`;
+    }
+  };
+
+  // Show the selection position
+  const showSelectionPosition = () => {
+    const selection = window.getSelection();
+    if (selection && selection.toString().trim()) {
+      selectedText = selection.toString();
+      const range = selection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+      position = {
+        top: rect.top + window.scrollY,
+        left: rect.left + window.scrollX,
+      };
+
+      // Send a message to background to update context menu
+      chrome.runtime.sendMessage({ action: "updateContextMenu" });
+    }
+  };
+
+  // Listen for text selection
+  const onSelectionChange = () => {
+    showSelectionPosition();
+  };
+
+  // Add listener for outside click to hide the tooltip
+  const addOutsideClickListener = () => {
+    document.addEventListener("click", (event) => {
+      const tooltip = document.getElementById("tooltip-container");
+
+      if (tooltip && !tooltip.contains(event.target)) {
+        const tooltips = document.getElementsByClassName('tooltip-class');
+
+        // Loop through each element and set its display style to 'none'
+        for (let i = 0; i < tooltips.length; i++) {
+          tooltips[i].style.display = 'none';
+        }
+      }
+    });
+  };
+
+  // Initialize the functionality
+  const init = () => {
+    // Create the tooltip
+    createTooltip();
+
+    // Monitor selection change
+    window.addEventListener("mouseup", onSelectionChange);
+
+    // Add listener for outside click to hide the tooltip
+    addOutsideClickListener();
+  };
+
+  // Run initialization
+  init();

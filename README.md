@@ -1,5 +1,12 @@
+## Next
+- Tooltip on text selection
+  - translate
+  - summarize
+  - easy explai
+- sidebar chat
+-
+
 ## Issues
-- tailwind css not applied
 -
 
 ## Features
