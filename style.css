@@ -4,9 +4,8 @@
 
 .plasmo-corner-button {
   position: fixed !important;
-  width: 24px !important;
-  height: 24px !important;
-  background: #4CAF50 !important;
+  width: 20px !important;
+  height: 20px !important;
   border: none !important;
   border-radius: 50% !important;
   color: white !important;
@@ -23,11 +22,11 @@
   min-width: unset !important;
   min-height: unset !important;
   line-height: 24px !important;
+  transition: transform 0.3s ease;
 }
 
 .plasmo-corner-button:hover {
-  background: #45a049 !important;
-  transform: scale(1.1) !important;
+  transform: rotate(360deg) !important;
 }
 
 .plasmo-context-menu {

@@ -302,14 +302,6 @@ const handleEdit = (id) => {
                 className="w-full mb-2 p-2 border rounded"
               />
               <input
-                type="text"
-                name="icon"
-                placeholder="Icon URL"
-                value={newPrompt.icon}
-                onChange={handleFormChange}
-                className="w-full mb-2 p-2 border rounded"
-              />
-              <input
                 type="url"
                 name="website"
                 placeholder="Website"

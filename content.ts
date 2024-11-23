@@ -179,22 +179,24 @@ const initializeEnhancement = () => {
     return Array.from(document.querySelectorAll(selector))
   }
 
-  // Create and position corner button
   const createCornerButton = (element: Element): HTMLButtonElement => {
-    const button = document.createElement("button")
-     const icon = document.createElement("img");
-    icon.src = chrome.runtime.getURL("icon.png");
+    const button = document.createElement("button");
+    const icon = document.createElement("img");
+
+    icon.src = chrome.runtime.getURL("assets/icon.png");
     icon.alt = "Extension Icon";
     icon.className = "plasmo-corner-button-icon";
 
-    // Append the icon to the button
     button.appendChild(icon);
-    button.className = "plasmo-corner-button"
-    button.innerHTML = '*';
-    button.setAttribute('data-plasmo-button', 'true')
-    positionCornerButton(button, element)
-    return button
+
+    button.className = "plasmo-corner-button";
+    button.setAttribute('data-plasmo-button', 'true');
+
+    positionCornerButton(button, element);
+
+    return button;
   }
+
 
   const positionCornerButton = (button: HTMLButtonElement, element: Element) => {
     const rect = element.getBoundingClientRect()
