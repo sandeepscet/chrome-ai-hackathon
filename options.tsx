@@ -5,7 +5,7 @@ import { faPen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faPen,faTrashCan);
 
-import './style.css';
+import './options.css';
 
 type Prompt = {
   id: string,
