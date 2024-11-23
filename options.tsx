@@ -246,6 +246,10 @@ const handleEdit = (id) => {
                 value={settings.token}
                 onChange={handleTokenChange}
               />
+              <div className="bg-yellow-400 text-black p-4 rounded-md mt-2">
+                <strong>Warning!</strong> Demo feature showcasing the extensibility of the extension.
+                Implemented Soon!!
+              </div>
             </div>
           )}
         </div>
@@ -352,7 +356,6 @@ const handleEdit = (id) => {
               {paginatedPrompts.map((prompt, index) => (
                 <tr key={index}>
                   <td className="border p-2">{prompt.title}</td>
-                  <td className="border p-2">{prompt.website}</td>
                   <td className="border p-2">{prompt.website}</td>
                   <td className="border p-2">
                     <FontAwesomeIcon icon="pen"

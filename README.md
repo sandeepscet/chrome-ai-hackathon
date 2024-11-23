@@ -1,11 +1,17 @@
 ## Next
+- Better UI on textarea with options
+- icon url in prompt not working wit sees data
 - Tooltip on text selection
+  - better UI
   - API working
 - sidebar chat
+  - working API
+  - better UI
 -
 
 ## Issues
 - Limit CSS scope to extention
+- icon url in prompt not working
 
 ## Features
 - Store Prompts by website or *

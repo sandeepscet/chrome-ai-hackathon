@@ -1,3 +1,50 @@
+chrome.runtime.onInstalled.addListener(async () => {
+  const seedPrompts = [
+      {
+          "description": "Automatically detect and correct any grammatical errors, spelling mistakes, and typographical issues in their text",
+          "icon": "",
+          "id": "e5fc6265-8f4c-44fe-a27e-60b3ca39d55a",
+          "role": "Content writer",
+          "title": "Grammerly",
+          "website": ""
+      },
+      {
+          "description": "Adjust the tone of writing more formal and professional",
+          "icon": "",
+          "id": "e5fc6265-8f4c-44fe-a27e-60b3ca39d55b",
+          "role": "Content Writer",
+          "title": "Formal Writer",
+          "website": ""
+      },
+      {
+          "description": "Adjust the tone of writing more casual suited to social media",
+          "icon": "",
+          "id": "e5fc6265-8f4c-44fe-a27e-60b3ca39d55c",
+          "role": "Social Media Content Writer",
+          "title": "Casual Writer",
+          "website": ""
+      },
+      {
+          "description": "Convert the following text into Gen Z lingo and slang, making it sound more casual, trendy, and relevant to younger audiences. Use popular terms, abbreviations, and expressions commonly used on social media and in digital conversations.",
+          "icon": "",
+          "id": "e5fc6265-8f4c-44fe-a27e-60b3ca39d55d",
+          "role": "Content Writer",
+          "title": "Genz",
+          "website": ""
+      }
+  ];
+
+  const existingData = await chrome.storage.local.get("prompts")
+  const prompts = existingData?.prompts;
+
+  if (!prompts || (prompts && prompts.length === 0)) {
+    await chrome.storage.local.set({ prompts: seedPrompts });
+    console.log("Seed data added to storage")
+  } else {
+    console.log("Data already exists, not adding seed data.")
+  }
+})
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "updateContextMenu") {
     // Remove existing context menu items to avoid duplicates
