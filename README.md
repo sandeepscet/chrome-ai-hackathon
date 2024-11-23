@@ -1,13 +1,8 @@
 ## Next
-- Better UI on textarea with options
-- icon url in prompt not working wit sees data
-- Tooltip on text selection
-  - better UI
-  - API working
 - sidebar chat
   - working API
   - better UI
--
+- custom action with dialog
 
 ## Issues
 - Limit CSS scope to extention

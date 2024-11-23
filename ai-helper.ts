@@ -16,12 +16,10 @@ export async  function fetchPromptsForCurrentWebsite (callback) {
 
 
 export async function generateText(promptId, text , prompts) {
-  return await simulatePromptStreaming('hard coded text');
-
     const capabilities = await ai.languageModel.capabilities();
 
     if (!capabilities.available) {
-        //return await 'AI Model not available';
+        return await 'AI Model not available';
     }
 
     const prompt = prompts[promptId];
@@ -37,7 +35,8 @@ export async function generateText(promptId, text , prompts) {
 
          return await session.promptStreaming(promptText);
       } catch (error) {
-         return await "Error in AI model response.";
+        console.log(error);
+        return await "Error in AI model response.";
       }
     }
 

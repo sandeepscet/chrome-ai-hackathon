@@ -325,30 +325,6 @@ initializeEnhancement()
     return tooltip;
   };
 
-  // Simulate async API call (for demonstration purposes)
-  const simulateApiCall = (action, selectedText) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(`${action} result for: "${selectedText}"`);
-      }, 1000);
-    });
-  };
-
-  // Show the tooltip with the result
-  const showTooltip = (result) => {
-    const tooltip = document.getElementById("tooltip-container");
-
-    // Remove existing tooltip if any
-    tooltip.style.display = "none"; // Hide current tooltip
-    tooltip.textContent = result;
-    tooltip.style.display = "block"; // Show the new tooltip
-
-    if (position) {
-      tooltip.style.top = `${position.top + 40}px`;
-      tooltip.style.left = `${position.left}px`;
-    }
-  };
-
   // Show the selection position
   const showSelectionPosition = () => {
     const selection = window.getSelection();

@@ -1,6 +1,6 @@
 {
   "name": "chrome-ai-hackathon",
-  "displayName": "Chrome ai hackathon",
+  "displayName": "Chromatic",
   "version": "0.0.1",
   "description": "Google Chrome Built-in AI Challenge",
   "author": "sandeep.scet@gmail.com",
@@ -33,8 +33,12 @@
   "manifest": {
     "web_accessible_resources": [
       {
-        "resources": ["assets/icon.png"],
-        "matches": ["*://*/*"]
+        "resources": [
+          "assets/icon.png"
+        ],
+        "matches": [
+          "*://*/*"
+        ]
       }
     ],
     "permissions": [
