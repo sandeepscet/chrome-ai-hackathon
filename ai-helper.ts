@@ -15,14 +15,14 @@ export async  function fetchPromptsForCurrentWebsite (callback) {
 };
 
 
-export async function generateText(promptId, text , prompts) {
+export async function generateText(promptId, text , prompts , promptText) {
     const capabilities = await ai.languageModel.capabilities();
 
     if (!capabilities.available) {
         return await 'AI Model not available';
     }
 
-    const prompt = prompts[promptId];
+    const prompt = prompts[promptId] || {description: promptText, role: '' };
 
     if (prompt) {
       const promptText = `${prompt.description} to given input Input: ${text}. Make sure to reply with just output text without any context or output information. it should be directly usable without surrounding quotes`
@@ -30,7 +30,7 @@ export async function generateText(promptId, text , prompts) {
 
       try {
           const session = await ai.languageModel.create({
-          systemPrompt: "Pretend to be a role of ." + prompt.role ?? 'good writer'
+          systemPrompt: "Pretend to be a role of ." + (prompt.role || 'good writer')
         });
 
          return await session.promptStreaming(promptText);

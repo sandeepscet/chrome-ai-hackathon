@@ -4,7 +4,6 @@
 - custom action with dialog
 
 ## Issues
-- Limit CSS scope to extention
 - respondse with double qutoes
 - Make chat response async
 

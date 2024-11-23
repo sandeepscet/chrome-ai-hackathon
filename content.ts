@@ -1,6 +1,7 @@
 import type { PlasmoCSConfig } from "plasmo"
 import cssText from "data-text:./style.css"
 import { fetchPromptsForCurrentWebsite, generateText } from "~ai-helper"
+import { createDialogManager } from './dialog';
 
 let prompts = [];
 
@@ -58,6 +59,8 @@ interface ContextMenuItem {
   promptId?: string
 }
 
+const dialogManager = createDialogManager();
+
 // Create context menu
 const createContextMenu = (items: ContextMenuItem[], targetId: string): HTMLElement => {
   const menu = document.createElement("div")
@@ -98,26 +101,20 @@ const createContextMenu = (items: ContextMenuItem[], targetId: string): HTMLElem
 }
 
 // Handle text formatting
-const applyFormatting = async (element: Element, promptId: number) => {
+const applyFormatting = async (element: Element, promptId: number, selectedText: String) => {
   if (element instanceof HTMLTextAreaElement || element instanceof HTMLInputElement) {
-    const start = element.selectionStart
-    const end = element.selectionEnd
-
-    if (start === null || end === null) return
-
-    const text = element.value
-    let selectedText = text.substring(start, end)
-    selectedText = selectedText || text
-    if (!selectedText) return
-
     let formattedText = ''
 
     element.value = 'Generating!!'
-    const stream = await generateText(promptId, selectedText, prompts);
+    const stream = await generateText(promptId, selectedText, prompts, '');
 
-    for await (const chunk of stream) {
-      formattedText = chunk;
-      element.value = formattedText;
+    if (stream && stream[Symbol.asyncIterator]) {
+      for await (const chunk of stream) {
+        formattedText = chunk;
+        element.value = formattedText;
+      }
+    } else {
+      element.value = stream
     }
 
     element.focus()
@@ -128,15 +125,37 @@ let activeMenu: HTMLElement | null = null
 let selectedIndex = -1
 
 const handleMenuAction = async (action: number, menu: HTMLElement) => {
+  const selectedText = '';
   const targetId = menu.getAttribute('data-target-id')
   const element = document.getElementById(targetId!)
   if (!element) return
 
+  if (element instanceof HTMLTextAreaElement || element instanceof HTMLInputElement) {
+    const start = element.selectionStart
+    const end = element.selectionEnd
+
+    if (start === null || end === null) return
+
+    const text = element.value
+    let selectedText = text.substring(start, end)
+    selectedText = selectedText || text
+    if (!selectedText) return
+  }
+
   const loader = showLoader(element)
 
   try {
-    await new Promise(resolve => setTimeout(resolve, 500)) // Reduced timeout for better UX
-    applyFormatting(element, action)
+    if (action) {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      applyFormatting(element, action, selectedText);
+    } else {
+      dialogManager.openDialog(selectedText, (values) => {
+          console.log('Inserted values:', values);
+          if (element instanceof HTMLTextAreaElement || element instanceof HTMLInputElement) {
+            element.value = values.content;
+          }
+      });
+    }
   } finally {
     loader.remove()
     closeContextMenu()
@@ -193,8 +212,8 @@ const showLoader = (element: Element) => {
 const initializeEnhancement = () => {
   // Find editable elements
   const findEditableElements = (): Element[] => {
-    const selector = 'textarea, [role="textbox"], [contenteditable="true"]'
-    return Array.from(document.querySelectorAll(selector))
+    const selector = 'textarea:not(.no-chromatic), [role="textbox"]:not(.no-chromatic), [contenteditable="true"]:not(.no-chromatic)';
+    return Array.from(document.querySelectorAll(selector));
   }
 
   const createCornerButton = (element: Element): HTMLButtonElement => {
@@ -247,6 +266,15 @@ const initializeEnhancement = () => {
       const menuitems = prompts.map((item, index) => {
         return { ...item, promptId: index.toString() };
       });
+
+      menuitems[menuitems.length] = {
+          "description": "",
+          "icon": "",
+          "id": "",
+          "role": "",
+          "title": "Custom",
+          "website": ""
+      };
 
       const menu = createContextMenu(menuitems, uniqueId)
       const rect = cornerButton.getBoundingClientRect()

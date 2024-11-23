@@ -1,0 +1,114 @@
+#plasmo-dialog-container {
+    /* Reset styles */
+    all: initial;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+#plasmo-dialog-container dialog {
+    @apply p-6 rounded-lg shadow-2xl border border-gray-200;
+    background: white;
+    min-width: 500px;
+    max-width: 90vw;
+    margin: 1.5rem auto;
+}
+
+#plasmo-dialog-container dialog::backdrop {
+    background-color: rgb(0 0 0 / 0.7);
+    backdrop-filter: blur(4px);
+}
+
+#plasmo-dialog-container .dialog-header {
+    @apply mb-6;
+}
+
+#plasmo-dialog-container .dialog-title {
+    @apply text-lg font-semibold text-gray-900;
+}
+
+#plasmo-dialog-container .dialog-form {
+    @apply space-y-6;
+}
+
+#plasmo-dialog-container .input-group {
+    @apply space-y-2;
+}
+
+#plasmo-dialog-container label {
+    @apply block text-sm font-medium text-gray-700;
+}
+
+#plasmo-dialog-container textarea {
+    @apply block w-full rounded-md border-gray-300 shadow-sm;
+    @apply focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
+    @apply text-sm text-gray-900;
+    min-height: 100px;
+    resize: vertical;
+    border: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+    transition: all 0.15s ease;
+}
+
+#plasmo-dialog-container textarea:focus {
+    background-color: white;
+}
+
+#plasmo-dialog-container .button-group {
+    @apply flex justify-end space-x-3 mt-8;
+}
+
+#plasmo-dialog-container button {
+    @apply px-4 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply transition-all duration-200 ease-in-out;
+}
+
+#plasmo-dialog-container .cancel-button {
+    @apply bg-white text-gray-700 border border-gray-300;
+    @apply hover:bg-gray-50 focus:ring-gray-500;
+    cursor: pointer;
+}
+
+#plasmo-dialog-container .submit-button {
+    @apply bg-indigo-600 text-white border border-transparent;
+    @apply hover:bg-indigo-700 focus:ring-indigo-500;
+    cursor: pointer;
+}
+
+#plasmo-dialog-container .insert-button {
+    @apply bg-emerald-600 text-white border border-transparent;
+    @apply hover:bg-emerald-700 focus:ring-emerald-500;
+    cursor: pointer;
+}
+
+/* Loading spinner */
+#plasmo-dialog-container .submit-button.loading {
+    @apply relative text-opacity-0 cursor-wait;
+}
+
+#plasmo-dialog-container .submit-button.loading::after {
+    content: "";
+    @apply absolute inset-0 m-auto w-5 h-5 border-2 border-white rounded-full;
+    border-right-color: transparent;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Dialog animation */
+@keyframes slideIn {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+#plasmo-dialog-container dialog[open] {
+    animation: slideIn 0.2s ease-out;
+}
