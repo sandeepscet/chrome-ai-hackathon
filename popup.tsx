@@ -29,7 +29,7 @@ const Popup = () => {
 
   return (
     <div className="p-4 w-80">
-      <h1 className="text-xl font-bold mb-4">Copilot</h1>
+      <h1 className="text-xl font-bold mb-4">Chromatic</h1>
       <button
         onClick={() => chrome.runtime.openOptionsPage()}
         className="w-full bg-gray-500 text-white py-2 px-4 rounded mt-4 mb-4"
