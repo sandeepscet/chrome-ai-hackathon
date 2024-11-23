@@ -11,7 +11,7 @@
 
 ## Issues
 - Limit CSS scope to extention
-- icon url in prompt not working
+- respondse with double qutoes
 
 ## Features
 - Store Prompts by website or *
