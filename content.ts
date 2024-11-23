@@ -10,9 +10,27 @@ fetchPromptsForCurrentWebsite((filteredPrompts) => {
 
 // Extract body text
 const getBodyText = () => {
-    let bodyText = document.body.innerText || document.body.textContent;
-    return bodyText.trim();
+  // Wait until the document is fully loaded, if not already
+  if (document.readyState !== 'loading') {
+      return getTextContent();
+  }
+
+  // If the document is still loading, use an event listener to wait for it
+  document.addEventListener('DOMContentLoaded', () => {
+      return getTextContent();
+  });
+
+  // Helper function to get clean text content
+  function getTextContent() {
+      let bodyText = document.body.innerText || document.body.textContent;
+
+      // Additional sanitization or cleaning of text if needed
+      bodyText = bodyText.replace(/[\n\r]+/g, ' ').trim();
+
+      return bodyText;
+  }
 };
+
 
 // Send body text to the extension's background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

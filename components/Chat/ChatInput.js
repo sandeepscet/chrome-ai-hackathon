@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
 const ChatInput = ({ onSend, onReset }) => {
+  const [extIcon, setExtIcont] = useState("");
   const [content, setContent] = useState("");
   const textareaRef = useRef(null);
 
   useEffect(() => {
-
+    const icon = chrome.runtime.getURL("assets/icon.png");
+    setExtIcont(icon);
   }, [])
 
   const handleChange = (e) => {
@@ -60,8 +62,8 @@ const ChatInput = ({ onSend, onReset }) => {
         onKeyDown={handleKeyDown}
       />
       <button onClick={() => handleSend()}>
-        <p className="absolute  bottom-3 h-8 w-8 hover:cursor-pointer rounded-full p-1 bg-blue-700 text-white hover:opacity-80" style={{'right':'2.5rem'}}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3 20v-6l8-2l-8-2V4l19 8l-19 8Z"/></svg>
+        <p className="absolute  bottom-3 h-8 w-8 hover:cursor-pointer rounded-full p-1 text-white hover:opacity-80" style={{'right':'2.5rem'}}>
+          <img src={extIcon} alt="send" />
         </p>
       </button>
       <button onClick={() => handleReset()}>

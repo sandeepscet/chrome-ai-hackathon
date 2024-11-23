@@ -1,12 +1,12 @@
 ## Next
 - sidebar chat
   - working API
-  - better UI
 - custom action with dialog
 
 ## Issues
 - Limit CSS scope to extention
 - respondse with double qutoes
+- Make chat response async
 
 ## Features
 - Store Prompts by website or *
@@ -16,7 +16,6 @@
 - open dialog on  action with selected or all text and write command if custom prompt
 - Show summarize, rewrite whenever text select like google disctionary
 - Chat with current page
-- dark mode friend css
 
 ## Commands
 - npm run dev

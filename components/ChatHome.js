@@ -11,23 +11,59 @@ const ChatHome = ({ bodyText }) => {
 
   const messagesEndRef = useRef(null);
 
-  useEffect(async () => {
-      bodyText
-       const session = await ai.languageModel.create({
-        initialPrompts: [
-          { role: "system", content: `Act as a expert Teacher and answer questions from provided content. content: ${bodyText}` },
-        ]
-      });
-      session.addEventListener("contextoverflow", () => {
-        console.log("Prompt API Token overflow, Report to Chrome!!");
-      });
+  useEffect(() => {
+       console.log({bodyText});
 
-      setAisession(session)
-    }, []);
+       if (!bodyText) {
+        return;
+       }
+
+        const fetchData = async () => {
+          try {
+            if (aisession && typeof aisession.destroy === "function") {
+              aisession.destroy();
+            }
+
+
+            console.log(`Act as a expert Teacher and answer questions from provided content. content: ${bodyText}`)
+            const session = await ai.languageModel.create({
+              initialPrompts: [
+                { role: "system", content: `Act as a expert Teacher and answer questions from provided content. content: ${bodyText}` },
+              ]
+            });
+
+            if (session) {
+              setAisession(session)
+            } else {
+              alert('AI language model not available');
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
+
+      //  fetchData();
+    }, [bodyText]);
 
    const getAnswer = async (question) => {
-    const freshSession = await aisession.clone();
-    return await freshSession.prompt(question);
+     console.log(`Act as a expert Teacher and answer questions from provided content. content: ${bodyText}`)
+    const session = await ai.languageModel.create({
+      systemPrompt: `Act as a expert Teacher and answer from provided book content. Book content: ${bodyText}`
+    });
+
+    if (session) {
+      try {
+        console.log({session});
+        console.log({question});
+        return await session.prompt(question);
+      } catch (error) {
+        console.log(error);
+        return "failed to get answer: " + error.message + '. Mostly token exceeded due to large content on page.';
+      }
+    } else {
+      return "freshmodel not cloned";
+    }
+
   }
 
   const scrollToBottom = () => {
