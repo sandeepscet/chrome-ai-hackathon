@@ -26,6 +26,7 @@ With this extension, AI is no longer an abstract concept; it’s a practical, ac
 - [Summarizer API](https://developer.chrome.com/docs/ai/summarizer-api)
 - [Google Chrome Built-in AI Challenge](https://googlechromeai.devpost.com/)
 - [Plasmo Framework](https://github.com/PlasmoHQ/plasmo)
+- [Feature Recording](https://www.youtube.com/watch?v=SEQzP0SkDy8)
 
 ## Commands
 - npm run dev
