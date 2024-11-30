@@ -94,6 +94,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 const performAction = async (action, selectedText) => {
   switch (action) {
     case 'Summarize':
+      let available = null;
       const options = {
         sharedContext: "This is web page content",
         type: 'key-points',
@@ -101,7 +102,7 @@ const performAction = async (action, selectedText) => {
       };
 
       try {
-        const available = (await ai.summarizer.capabilities()).available;
+        available = (await self.ai.summarizer.capabilities()).available;
         let summarizer;
 
         if (available === 'no') {
@@ -114,7 +115,7 @@ const performAction = async (action, selectedText) => {
 
       if (available === 'readily') {
         try {
-          summarizer = await ai.summarizer.create(options);
+          summarizer = await self.ai.summarizer.create(options);
           await summarizer.ready;
           const summary = await summarizer.summarize(selectedText, {
             context: 'This article is intended for a web audience.',
