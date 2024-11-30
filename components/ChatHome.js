@@ -46,16 +46,17 @@ const ChatHome = ({ bodyText }) => {
     }, [bodyText]);
 
    const getAnswer = async (question) => {
-     console.log(`Act as a expert Teacher and answer questions from provided content. content: ${bodyText}`)
     const session = await ai.languageModel.create({
-      systemPrompt: `Act as a expert Teacher and answer from provided book content. Book content: ${bodyText}`
+      systemPrompt: `Act as a expert Teacher and answer from provided book content delimited by triple backticks. Book content: \`\`\`${bodyText}\`\`\``
     });
 
     if (session) {
       try {
-        console.log({session});
         console.log({question});
-        return await session.prompt(question);
+        console.log({'prompt' : question.content})
+        const freshSession = await session.clone();
+        const result = await freshSession.prompt(question.content);
+        return result;
       } catch (error) {
         console.log(error);
         return "failed to get answer: " + error.message + '. Mostly token exceeded due to large content on page.';

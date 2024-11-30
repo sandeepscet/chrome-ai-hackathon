@@ -1,7 +1,4 @@
 ## Next
-- sidebar chat
-  - working API
-- custom action with dialog
 
 ## Issues
 - Make chat response async

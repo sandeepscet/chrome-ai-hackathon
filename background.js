@@ -100,11 +100,17 @@ const performAction = async (action, selectedText) => {
         format: 'markdown',
       };
 
-      const available = (await ai.summarizer.capabilities()).available;
-      let summarizer;
-      if (available === 'no') {
-        return await 'The Summarizer API isnt usable';
-      }
+      try {
+        const available = (await ai.summarizer.capabilities()).available;
+        let summarizer;
+
+        if (available === 'no') {
+          return await 'The Summarizer API isnt usable';
+        }
+       } catch (error) {
+          console.log(error);
+          return "summarizer model not available";
+        }
 
       if (available === 'readily') {
         try {
@@ -113,6 +119,7 @@ const performAction = async (action, selectedText) => {
           const summary = await summarizer.summarize(selectedText, {
             context: 'This article is intended for a web audience.',
           });
+          console.log({summary})
           return summary;
         } catch (error) {
           console.log(error);
