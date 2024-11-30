@@ -113,7 +113,7 @@ const applyFormatting = async (element: Element, promptId: number, selectedText:
       for await (const chunk of stream) {
         formattedText = chunk;
 
-        // promptai respond with double quotes somehow
+      // promptai respond with double quotes somehow
       if (formattedText.startsWith('"') || formattedText.startsWith("'")) {
         formattedText = formattedText.slice(1);
       }

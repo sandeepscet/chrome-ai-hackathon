@@ -182,7 +182,7 @@ const generateAIText = async (text , prompt) => {
 
          return await session.prompt(promptText);
       } catch (error) {
-        console.log(error);
+        alert(error.message || error)
         return await "Error in AI model response.";
       }
     }

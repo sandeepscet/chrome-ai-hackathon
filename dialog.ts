@@ -113,11 +113,24 @@ class CustomDialog {
                  console.log({selectedText, promptText})
 
                 if (stream && stream[Symbol.asyncIterator]) {
+                    console.log({stream})
                     for await (const chunk of stream) {
                         formattedText = chunk;
+
+                        // promptai respond with double quotes somehow
+                        if (formattedText.startsWith('"') || formattedText.startsWith("'")) {
+                            formattedText = formattedText.slice(1);
+                        }
+                        if (formattedText.endsWith('"') || formattedText.endsWith("'")) {
+                            formattedText = formattedText.slice(0, -1);
+                        }
+
                         this.contentInput.value = formattedText;
+
+                        if (formattedText) {
+                            this.insertButton.style.display = 'block';
+                        }
                     }
-                    this.insertButton.style.display = 'block';
                 } else {
                     element.value = stream
                 }
@@ -125,6 +138,7 @@ class CustomDialog {
                 element.focus()
             } catch (error) {
                 console.error('API call failed:', error);
+                alert(error.message || error);
             } finally {
                 this.submitButton.classList.remove('loading');
             }

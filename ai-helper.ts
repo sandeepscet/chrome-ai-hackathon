@@ -36,6 +36,7 @@ export async function generateText(promptId, text , prompts , promptText) {
          return await session.promptStreaming(promptText);
       } catch (error) {
         console.log(error);
+        alert(error.message || error)
         return await "Error in AI model response.";
       }
     }
