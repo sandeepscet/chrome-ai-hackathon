@@ -25,8 +25,8 @@ export async function generateText(promptId, text , prompts , promptText) {
     const prompt = prompts[promptId] || {description: promptText, role: '' };
 
     if (prompt) {
-      const promptText = `${prompt.description} to given input Input: ${text}. Make sure to reply with just output text without any context or output information. it should be directly usable without surrounding quotes`
-      console.log({prompt, promptText})
+      const promptText = `${prompt.description} to given input in Triple Backticks. Input:\`\`\`${text}\`\`\`. Make sure to reply with just output text without any context or output information. response should be direct output,  usable and without surrounding quotes`
+      console.log({text, prompt, promptText})
 
       try {
           const session = await ai.languageModel.create({

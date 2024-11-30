@@ -83,7 +83,8 @@ const createContextMenu = (items: ContextMenuItem[], targetId: string): HTMLElem
     // Add click handler for each menu item
     option.addEventListener('click', (e) => {
       e.stopPropagation()
-      handleMenuAction(parseInt(item.promptId), menu)
+      const action = item.promptId ? parseInt(item.promptId) : null;
+      handleMenuAction(action, menu)
     })
 
     // Add mouse enter handler for highlighting
@@ -111,6 +112,15 @@ const applyFormatting = async (element: Element, promptId: number, selectedText:
     if (stream && stream[Symbol.asyncIterator]) {
       for await (const chunk of stream) {
         formattedText = chunk;
+
+        // promptai respond with double quotes somehow
+      if (formattedText.startsWith('"') || formattedText.startsWith("'")) {
+        formattedText = formattedText.slice(1);
+      }
+      if (formattedText.endsWith('"') || formattedText.endsWith("'")) {
+        formattedText = formattedText.slice(0, -1);
+      }
+
         element.value = formattedText;
       }
     } else {
@@ -125,9 +135,9 @@ let activeMenu: HTMLElement | null = null
 let selectedIndex = -1
 
 const handleMenuAction = async (action: number, menu: HTMLElement) => {
-  const selectedText = '';
+  let selectedText = '';
   const targetId = menu.getAttribute('data-target-id')
-  const element = document.getElementById(targetId!)
+  const element = document.getElementById(targetId)
   if (!element) return
 
   if (element instanceof HTMLTextAreaElement || element instanceof HTMLInputElement) {
@@ -137,7 +147,7 @@ const handleMenuAction = async (action: number, menu: HTMLElement) => {
     if (start === null || end === null) return
 
     const text = element.value
-    let selectedText = text.substring(start, end)
+    selectedText = text.substring(start, end)
     selectedText = selectedText || text
     if (!selectedText) return
   }
@@ -145,8 +155,7 @@ const handleMenuAction = async (action: number, menu: HTMLElement) => {
   const loader = showLoader(element)
 
   try {
-    if (action) {
-      await new Promise(resolve => setTimeout(resolve, 500));
+    if (action !== null) {
       applyFormatting(element, action, selectedText);
     } else {
       dialogManager.openDialog(selectedText, (values) => {

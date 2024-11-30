@@ -110,6 +110,7 @@ class CustomDialog {
                 const selectedText = this.selectedText;
                 const promptText = this.promptInput.value;
                 const stream = await generateText('', selectedText, [], promptText);
+                 console.log({selectedText, promptText})
 
                 if (stream && stream[Symbol.asyncIterator]) {
                     for await (const chunk of stream) {

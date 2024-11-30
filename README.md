@@ -4,7 +4,6 @@
 - custom action with dialog
 
 ## Issues
-- respondse with double qutoes
 - Make chat response async
 
 ## Features

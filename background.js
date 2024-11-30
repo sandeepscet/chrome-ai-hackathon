@@ -172,7 +172,7 @@ const generateAIText = async (text , prompt) => {
     }
 
     if (prompt) {
-      const promptText = `${prompt} to given input Input: ${text}. Make sure to reply with just output text without any context or output information. it should be directly usable without surrounding quotes`
+      const promptText = `${prompt} to given input in Triple Backticks. Input:\`\`\`${text}\`\`\`. Make sure to reply with just output text without any context or output information. response should be directl, usable and without surrounding quotes`
       console.log({promptText})
 
       try {
